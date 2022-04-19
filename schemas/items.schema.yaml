@@ -22,6 +22,7 @@ properties:
     items:
       $ref: "#/$defs/game_item"
 required:
+  - game_meta_categories
   - game_categories
   - game_items
 
