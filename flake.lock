@@ -1,0 +1,128 @@
+{
+  "nodes": {
+    "gojsonschema-cli": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1667242538,
+        "narHash": "sha256-KLpngK0hoFdCFuzet9uvH+dBTh8y+g6Xi9LQjLjYqfI=",
+        "owner": "alex-bechanko",
+        "repo": "gojsonschema-cli",
+        "rev": "3b98b28396dbfdca228180cab79a17879bf561f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alex-bechanko",
+        "repo": "gojsonschema-cli",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-21.11",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-21.11",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-21.11",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-21.11",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "gojsonschema-cli": "gojsonschema-cli",
+        "nixpkgs": "nixpkgs_2",
+        "static-file-server": "static-file-server",
+        "y2j": "y2j"
+      }
+    },
+    "static-file-server": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1667242193,
+        "narHash": "sha256-pCIC6rHwzwnYahNgQMRLi3UwmfNBbzcGJVnq8hctQqc=",
+        "owner": "alex-bechanko",
+        "repo": "static-file-server",
+        "rev": "6923b6f87a8d498b15017ea629c260f5b58e4667",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alex-bechanko",
+        "repo": "static-file-server",
+        "type": "github"
+      }
+    },
+    "y2j": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_4"
+      },
+      "locked": {
+        "lastModified": 1667243061,
+        "narHash": "sha256-7s4uXDrtUY+sccBCqEJWiCSd8G/OVABAKBVPx3dpsS4=",
+        "owner": "alex-bechanko",
+        "repo": "y2j",
+        "rev": "06e8aa559d920e71987f727fb8f1a175a94c525f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alex-bechanko",
+        "repo": "y2j",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
