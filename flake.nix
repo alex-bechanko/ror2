@@ -22,7 +22,5 @@
       formatter = pkgs.${system}.nixfmt;
 
     });
-
-  nixConfig.bash-prompt-prefix = "\\e[1m\\e[35mnix\\e[0m ";
 }
 
