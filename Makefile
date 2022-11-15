@@ -8,6 +8,7 @@ check-schema: build/data/items.json build/schemas/items.schema.json
 .PHONY: clean
 clean:
 	rm -rf build/
+	rm -rf web/elm-stuff
 
 
 # Starts the dev environment
