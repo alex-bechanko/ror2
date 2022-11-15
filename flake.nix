@@ -8,17 +8,18 @@
   inputs.static-file-server.url = "github:alex-bechanko/static-file-server";
   outputs =
     { self, nixpkgs, flake-utils, y2j, gojsonschema-cli, static-file-server }:
-    flake-utils.lib.eachDefaultSystem (system: {
-      devShells.default = nixpkgs.legacyPackages.${system}.mkShell {
+    let pkgs = nixpkgs.legacyPackages;
+    in flake-utils.lib.eachDefaultSystem (system: {
+      devShells.default = pkgs.${system}.mkShell {
         buildInputs = [
           y2j.packages.${system}.y2j
           gojsonschema-cli.packages.${system}.gojsonschema-cli
           static-file-server.packages.${system}.static-file-server
-          nixpkgs.legacyPackages.${system}.elmPackages.elm
+          pkgs.${system}.elmPackages.elm
         ];
       };
 
-      formatter = nixpkgs.legacyPackages.${system}.nixfmt;
+      formatter = pkgs.${system}.nixfmt;
 
     });
 
