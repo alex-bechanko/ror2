@@ -16,6 +16,8 @@
           gojsonschema-cli.packages.${system}.gojsonschema-cli
           static-file-server.packages.${system}.static-file-server
           pkgs.${system}.elmPackages.elm
+          pkgs.${system}.jq
+          pkgs.${system}.inotify-tools
         ];
       };
 

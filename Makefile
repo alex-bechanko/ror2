@@ -28,8 +28,9 @@ build/data: build
 build/schemas: build
 	mkdir -p build/schemas
 
-build/data/items.json: build/data data/items.yaml
-	y2j convert --input data/items.yaml --output build/data/items.json --prettify
+build/data/items.json: build/data data/items.nix
+	nix eval -f data/items.nix --json | jq > build/data/items.json
+	#y2j convert --input data/items.yaml --output build/data/items.json --prettify
 
-build/schemas/items.schema.json: build/schemas schemas/items.schema.yaml
-	y2j convert --input schemas/items.schema.yaml --output build/schemas/items.schema.json --prettify
+build/schemas/items.schema.json: build/schemas schemas/items.schema.nix schemas/game_item.schema.nix schemas/game_category.schema.nix schemas/game_meta_category.schema.nix
+	nix eval -f schemas/items.schema.nix --json | jq > build/schemas/items.schema.json
