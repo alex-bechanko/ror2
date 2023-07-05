@@ -1,88 +1,127 @@
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
-import Constants
-import Data exposing (Items, itemsDecoder)
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
-import Http
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events as Events exposing (..)
+import Items exposing (backgroundClass)
+
+
+condClass cond cl =
+    if cond then
+        class cl
+
+    else
+        class ""
 
 
 main : Program () Model Msg
 main =
-    Browser.element { init = init, update = update, subscriptions = subscriptions, view = view }
+    Browser.sandbox { init = init, update = update, view = view }
 
 
-type Model
-    = LoadDataFailure Http.Error
-    | LoadingData
-    | Model { items : Items }
+type alias Model =
+    { items : List Items.Details, focusedItem : Maybe.Maybe Items.Details, searchContent : String, searchMatches : List String }
 
 
 type Msg
-    = DownloadedItemsData (Result Http.Error Items)
+    = ItemMouseOver Items.Details
+    | SearchStringUpdate String
 
 
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
+init : Model
+init =
+    { items = Items.items, focusedItem = Maybe.Nothing, searchContent = "", searchMatches = [] }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( LoadingData
-    , Http.get
-        { url = Constants.itemsDataURL
-        , expect = Http.expectJson DownloadedItemsData itemsDecoder
-        }
-    )
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg _ =
+update : Msg -> Model -> Model
+update msg data =
     case msg of
-        DownloadedItemsData result ->
-            case result of
-                Ok data ->
-                    ( Model { items = data }, Cmd.none )
+        ItemMouseOver item ->
+            { data | focusedItem = Maybe.Just item }
 
-                Err err ->
-                    ( LoadDataFailure err, Cmd.none )
-
-
-loadItemsDataFailureMessage : Http.Error -> String
-loadItemsDataFailureMessage error =
-    case error of
-        Http.BadUrl url ->
-            "Unable to load items data: bad url provided " ++ url
-
-        Http.Timeout ->
-            "Unable to load items data: timeout"
-
-        Http.NetworkError ->
-            "Unable to load items data: network error"
-
-        Http.BadStatus status ->
-            "Unable to load items data: bad status " ++ String.fromInt status ++ " received"
-
-        Http.BadBody body ->
-            "Unable to load items data: bad body \"" ++ body ++ "\" provided"
+        SearchStringUpdate search ->
+            { data | searchContent = search }
 
 
 view : Model -> Html Msg
-view model =
-    case model of
-        LoadDataFailure err ->
-            text (loadItemsDataFailureMessage err)
+view data =
+    div [ class "px-4" ]
+        [ node "link" [ rel "stylesheet", href "/styles/style.css" ] []
+        , div []
+            [ h1 [ class "text-xl", class "px-4", class "pt-4" ] [ text "Risk of Rain 2 Items" ]
+            , viewSearchBar data.searchContent
+            ]
+        , div [ class "flex" ]
+            [ viewItemList data.items data.searchContent
+            , viewFocusedItem data.focusedItem
+            ]
+        ]
 
-        LoadingData ->
-            text "Loading items data"
 
-        Model data ->
-            Html.pre [] [ text (Debug.toString data.items) ]
+viewFocusedItem : Maybe.Maybe Items.Details -> Html Msg
+viewFocusedItem focus =
+    case focus of
+        Maybe.Nothing ->
+            div [ class "w-1/4", class "p-4" ] []
+
+        Maybe.Just item ->
+            div [ class "w-1/4", class "p-4" ]
+                [ h3 [] [ text item.displayName ]
+                , p [] [ text item.description ]
+                ]
 
 
-itemList : Items -> Html Msg
-itemList items =
-    Html.div []
-        []
+viewItemList : List Items.Details -> String -> Html Msg
+viewItemList items search =
+    let
+        orderedItems =
+            List.sortWith Items.defaultItemOrder items
+    in
+    div [ class "w-3/4", class "p-4" ]
+        [ ul [ class "flex", class "flex-wrap" ]
+            (List.map (\x -> viewItem x search) orderedItems)
+        ]
+
+
+viewItem : Items.Details -> String -> Html Msg
+viewItem item search =
+    let
+        foundcls =
+            if String.contains search item.displayName then
+                class ""
+
+            else
+                class "opacity-50"
+    in
+    li
+        [ class "bg-cover"
+        , class "w-12"
+        , class "h-12"
+        , class "flex"
+        , class "justify-center"
+        , class "m-0.5"
+        , foundcls
+        , class <| backgroundClass item
+        , Events.onMouseOver (ItemMouseOver item)
+        ]
+        [ img
+            [ src (Items.image item)
+            , class "max-w-12"
+            , class "max-h-12"
+            ]
+            []
+        ]
+
+
+viewSearchBar : String -> Html Msg
+viewSearchBar content =
+    div [ class "p-4" ]
+        [ input
+            [ placeholder "search ..."
+            , value content
+            , class "p-1"
+            , onInput SearchStringUpdate
+            ]
+            []
+        ]

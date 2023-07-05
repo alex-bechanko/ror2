@@ -1,7 +1,7 @@
 {
   description = "A Risk of Rain 2 item searcher website";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-21.11";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.y2j.url = "github:alex-bechanko/y2j";
   inputs.gojsonschema-cli.url = "github:alex-bechanko/gojsonschema-cli";
@@ -16,6 +16,8 @@
           gojsonschema-cli.packages.${system}.gojsonschema-cli
           static-file-server.packages.${system}.static-file-server
           pkgs.${system}.elmPackages.elm
+          pkgs.${system}.elmPackages.elm-format
+          pkgs.${system}.nodePackages_latest.tailwindcss
         ];
       };
 

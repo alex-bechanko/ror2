@@ -10,12 +10,25 @@ clean:
 	rm -rf build/
 	rm -rf web/elm-stuff
 
-
-# Starts the dev environment
+# Starts the dev environment (static-file-server, tailwind, and elm reactor)
 .PHONY: dev
 dev: build/data/items.json
-	@bash tools/dev.sh
+	@bash tools/dev/dev.sh
 
+# Run tailwind
+.PHONY: tailwind
+tailwind:
+	@bash tools/dev/tailwind.sh
+
+# Run elm reactor
+.PHONY: reactor
+reactor: build/data/items.json
+	@bash tools/dev/elmreactor.sh
+
+# Run static-file-server to serve the items json payload
+.PHONY: fileserver
+fileserver: build/data/items.json
+	@bash tools/dev/staticfileserver.sh
 
 # --- Build specifics ---
 

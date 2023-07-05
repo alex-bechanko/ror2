@@ -1,0 +1,77 @@
+.container {
+    padding: 2%;
+    display:flex;
+    /* background-color: #1a1a1b; */
+    background-color: #030208;
+    color: #d7dadc;
+
+}
+
+.item-description {
+    height: 100%;
+    min-width: 25%;
+    padding-left:1%;
+}
+
+ul.item-list {
+    padding-left:0;
+    /* max-width:896px; */
+    max-width:960px;
+    list-style-type: none;
+    display:flex;
+    flex-wrap: wrap;
+
+}
+
+.item-list li {
+    background-size:cover;
+    height: 64px;
+    flex-shrink:0;
+    flex-basis: 6.5%;
+    margin: 3px;
+}
+
+.item-list img {
+    float: left;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.rarity-common {
+    background-image: url("/images/backgrounds/common.png");
+}
+
+.rarity-rare {
+    background-image: url("/images/backgrounds/rare.png");
+}
+
+.rarity-legendary {
+    background-image: url("/images/backgrounds/legendary.png");
+}
+
+.rarity-boss {
+    background-image: url("/images/backgrounds/boss.png");
+}
+
+.rarity-lunar {
+    background-image: url("/images/backgrounds/lunar.png");
+}
+
+.rarity-void {
+    background-image: url("/images/backgrounds/void.png");
+}
+
+.rarity-equipment {
+    background-image: url("/images/backgrounds/equipment.png");
+}
+
+.not-search-match {
+    opacity: 0.25;
+}
+
+.search-bar input {
+    padding: 3px;
+    font-size: 1.3em;
+
+}
