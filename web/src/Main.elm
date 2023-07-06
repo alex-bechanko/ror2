@@ -1,18 +1,13 @@
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
+import ElmTextSearch
+import ElmTextSearchErrors
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events exposing (..)
 import Items exposing (backgroundClass)
-
-
-condClass cond cl =
-    if cond then
-        class cl
-
-    else
-        class ""
+import Search
 
 
 main : Program () Model Msg
@@ -21,7 +16,12 @@ main =
 
 
 type alias Model =
-    { items : List Items.Details, focusedItem : Maybe.Maybe Items.Details, searchContent : String, searchMatches : List String }
+    { items : List Items.Details
+    , focusedItem : Maybe.Maybe Items.Details
+    , searchContent : String
+    , searchMatches : List String
+    , itemIndex : ElmTextSearch.Index Items.Details
+    }
 
 
 type Msg
@@ -31,7 +31,16 @@ type Msg
 
 init : Model
 init =
-    { items = Items.items, focusedItem = Maybe.Nothing, searchContent = "", searchMatches = [] }
+    let
+        index =
+            Tuple.first <| Search.new Items.items
+    in
+    { items = Items.items
+    , focusedItem = Maybe.Nothing
+    , searchContent = ""
+    , searchMatches = List.map .displayName Items.items
+    , itemIndex = index
+    }
 
 
 update : Msg -> Model -> Model
@@ -41,7 +50,17 @@ update msg data =
             { data | focusedItem = Maybe.Just item }
 
         SearchStringUpdate search ->
-            { data | searchContent = search }
+            updateSearch search data
+
+
+updateSearch : String -> Model -> Model
+updateSearch search data =
+    case ElmTextSearch.searchT search data.itemIndex of
+        Result.Err _ ->
+            { data | searchMatches = List.map .displayName Items.items, searchContent = search }
+
+        Result.Ok ( index, matches ) ->
+            { data | itemIndex = index, searchMatches = List.map Tuple.first matches, searchContent = search }
 
 
 view : Model -> Html Msg
@@ -53,7 +72,7 @@ view data =
             , viewSearchBar data.searchContent
             ]
         , div [ class "flex" ]
-            [ viewItemList data.items data.searchContent
+            [ viewItemList data.items data.searchMatches
             , viewFocusedItem data.focusedItem
             ]
         ]
@@ -72,27 +91,27 @@ viewFocusedItem focus =
                 ]
 
 
-viewItemList : List Items.Details -> String -> Html Msg
-viewItemList items search =
+viewItemList : List Items.Details -> List String -> Html Msg
+viewItemList items matches =
     let
         orderedItems =
             List.sortWith Items.defaultItemOrder items
     in
     div [ class "w-3/4", class "p-4" ]
         [ ul [ class "flex", class "flex-wrap" ]
-            (List.map (\x -> viewItem x search) orderedItems)
+            (List.map (\x -> viewItem x (List.member x.displayName matches)) orderedItems)
         ]
 
 
-viewItem : Items.Details -> String -> Html Msg
-viewItem item search =
+viewItem : Items.Details -> Bool -> Html Msg
+viewItem item itemMatch =
     let
-        foundcls =
-            if String.contains search item.displayName then
+        itemMatchClass =
+            if itemMatch then
                 class ""
 
             else
-                class "opacity-50"
+                class "opacity-30"
     in
     li
         [ class "bg-cover"
@@ -101,7 +120,7 @@ viewItem item search =
         , class "flex"
         , class "justify-center"
         , class "m-0.5"
-        , foundcls
+        , itemMatchClass
         , class <| backgroundClass item
         , Events.onMouseOver (ItemMouseOver item)
         ]
