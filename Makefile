@@ -1,8 +1,4 @@
-
-# Checks if the json data fit's their associated schema
-.PHONY: check-schema
-check-schema: build/data/items.json build/schemas/items.schema.json
-	gojsonschema-cli check --document build/data/items.json --schema build/schemas/items.schema.json
+.DEFAULT_GOAL := all
 
 # Cleans build artifacts from the repo directory
 .PHONY: clean
@@ -10,39 +6,61 @@ clean:
 	rm -rf build/
 	rm -rf web/elm-stuff
 
-# Starts the dev environment (static-file-server, tailwind, and elm reactor)
-.PHONY: dev
-dev: build/data/items.json
-	@bash tools/dev/dev.sh
+serve: all
+	static-file-server serve --path build/ --port 8000
 
-# Run tailwind
-.PHONY: tailwind
-tailwind:
-	@bash tools/dev/tailwind.sh
+# Start of artifact generation in build directory
+.PHONY: all
+all: build/index.html build/js/ror2/main.js build/css/ror2.css build/js/ror2/items.js build/js/ror2/config.js images
 
-# Run elm reactor
-.PHONY: reactor
-reactor: build/data/items.json
-	@bash tools/dev/elmreactor.sh
+build/index.html: build web/index.html
+	cp web/index.html build/index.html
 
-# Run static-file-server to serve the items json payload
-.PHONY: fileserver
-fileserver: build/data/items.json
-	@bash tools/dev/staticfileserver.sh
+# Made phony to have `elm-make` track dependencies instead of attempting in make
+.PHONY: build/js/ror2/main.js
+build/js/ror2/main.js: build/js/ror2
+	cd web && elm make src/Main.elm --output ../build/js/ror2/main.js
 
-# --- Build specifics ---
+build/js/ror2/items.js: build/js/ror2 data/items.dhall
+	dhall-to-json --file data/items.dhall --output build/js/ror2/items.js --pretty
+	./tools/json-to-javascript.sh items build/js/ror2/items.js
 
+build/js/ror2/config.js: build/js/ror2 web/config.js
+	cp web/config.js build/js/ror2/config.js
+
+# Made phony to have `tailwindcss` track dependencies instead of attempting in make
+.PHONY: build/css/ror2.css
+build/css/ror2.css: build/css
+	tailwindcss -i web/styles/input.css -o build/css/ror2.css -c web/styles/tailwind.config.js	
+
+# Made phony to have `rsync` track updating the images instead of
+.PHONY: images
+images: build/images/ror2/backgrounds build/images/ror2/items
+	rsync -ah web/images/backgrounds/ build/images/ror2/backgrounds
+	rsync -ah web/images/items/ build/images/ror2/items
+
+# Start of rules for generating the build directory
 build:
 	mkdir -p build
 
-build/data: build
-	mkdir -p build/data
+build/js: build
+	mkdir -p build/js
 
-build/schemas: build
-	mkdir -p build/schemas
+build/js/ror2: build/js
+	mkdir -p build/js/ror2
 
-build/data/items.json: build/data data/items.yaml
-	y2j convert --input data/items.yaml --output build/data/items.json --prettify
+build/css: build
+	mkdir -p build/css
 
-build/schemas/items.schema.json: build/schemas schemas/items.schema.yaml
-	y2j convert --input schemas/items.schema.yaml --output build/schemas/items.schema.json --prettify
+build/images: build
+	mkdir -p build/images
+
+build/images/ror2: build/images
+	mkdir -p build/images/ror2
+
+build/images/ror2/backgrounds: build/images/ror2
+	mkdir -p build/images/ror2/backgrounds
+
+build/images/ror2/items: build/images/ror2
+	mkdir -p build/images/ror2/items
+	

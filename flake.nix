@@ -17,10 +17,13 @@
           static-file-server.packages.${system}.static-file-server
           pkgs.${system}.elmPackages.elm
           pkgs.${system}.elmPackages.elm-format
+          pkgs.${system}.elmPackages.elm-live
           pkgs.${system}.nodePackages_latest.tailwindcss
           pkgs.${system}.dhall
           pkgs.${system}.dhall-json
           pkgs.${system}.dhall-lsp-server
+          pkgs.${system}.rsync
+          pkgs.${system}.rename
         ];
       };
 

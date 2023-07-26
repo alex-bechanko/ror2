@@ -11,14 +11,14 @@ let Item : Type =
       , rarity : Rarity
       , description : Text
       , image : Text
-      , background_image : Text
+      , background : Text
       }
 
-let name_to_image = \(x: Text) -> Prelude.Text.replace " " "_" (Prelude.Text.lowerASCII x)
+let name_to_image = \(x: Text) -> (Prelude.Text.replace ")" "" (Prelude.Text.replace "(" "" (Prelude.Text.replace "." "" (Prelude.Text.replace "'" "" (Prelude.Text.replace " " "_" (Prelude.Text.lowerASCII x)))))) ++ ".png"
 
 let rarity_to_background_image = \(x: Rarity) -> merge { Common = "common.png", Rare = "rare.png", Legendary = "legendary.png", Boss = "boss.png", Lunar = "lunar.png", Void = "void.png", Equipment = "equipment.png"} x
 
-let item_metadata = \(name : Text) -> \(rarity: Rarity) -> {image = name_to_image name, background_image = rarity_to_background_image rarity}
+let item_metadata = \(name : Text) -> \(rarity: Rarity) -> {image = name_to_image name, background = rarity_to_background_image rarity}
 
 let add_item_metadata = \(item : BasicItem) -> item /\ (item_metadata item.name item.rarity)
 

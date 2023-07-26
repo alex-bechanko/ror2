@@ -6,13 +6,13 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'rarity-common': "url('/images/backgrounds/common.png')",
-        'rarity-rare': "url('/images/backgrounds/rare.png')",
-        'rarity-legendary': "url('/images/backgrounds/legendary.png')",
-        'rarity-boss': "url('/images/backgrounds/boss.png')",
-        'rarity-lunar': "url('/images/backgrounds/lunar.png')",
-        'rarity-void': "url('/images/backgrounds/void.png')",
-        'rarity-equipment': "url('/images/backgrounds/equipment.png')",
+        'rarity-common': "url('/images/ror2/backgrounds/common.png')",
+        'rarity-rare': "url('/images/ror2/backgrounds/rare.png')",
+        'rarity-legendary': "url('/images/ror2/backgrounds/legendary.png')",
+        'rarity-boss': "url('/images/ror2/backgrounds/boss.png')",
+        'rarity-lunar': "url('/images/ror2/backgrounds/lunar.png')",
+        'rarity-void': "url('/images/ror2/backgrounds/void.png')",
+        'rarity-equipment': "url('/images/ror2/backgrounds/equipment.png')",
       }
     },
   },

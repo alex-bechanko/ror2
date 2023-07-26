@@ -2,55 +2,72 @@ module Main exposing (Msg(..), main, update, view)
 
 import Browser
 import ElmTextSearch
-import ElmTextSearchErrors
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events exposing (..)
+import Item exposing (Item)
 import Items exposing (backgroundClass)
 import Search
 
 
-main : Program () Model Msg
+main : Program Flags Model Msg
 main =
-    Browser.sandbox { init = init, update = update, view = view }
+    Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
 
 
 type alias Model =
-    { items : List Items.Details
-    , focusedItem : Maybe.Maybe Items.Details
+    { items : List Item
+    , focusedItem : Maybe.Maybe Item
     , searchContent : String
     , searchMatches : List String
     , itemIndex : ElmTextSearch.Index Items.Details
+    , config : Config
     }
 
 
+type alias Flags =
+    { config : Config, items : List Item }
+
+
+type alias Config =
+    { itemImagesDirectory : String }
+
+
 type Msg
-    = ItemMouseOver Items.Details
+    = ItemMouseOver Item
     | SearchStringUpdate String
 
 
-init : Model
-init =
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     let
         index =
             Tuple.first <| Search.new Items.items
     in
-    { items = Items.items
-    , focusedItem = Maybe.Nothing
-    , searchContent = ""
-    , searchMatches = List.map .displayName Items.items
-    , itemIndex = index
-    }
+    ( { items = flags.items
+      , focusedItem = Maybe.Nothing
+      , searchContent = ""
+      , searchMatches = List.map .displayName Items.items
+      , itemIndex = index
+      , config = flags.config
+      }
+    , Cmd.none
+    )
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg data =
     case msg of
         ItemMouseOver item ->
-            { data | focusedItem = Maybe.Just item }
+            ( { data | focusedItem = Maybe.Just item }, Cmd.none )
 
         SearchStringUpdate search ->
-            updateSearch search data
+            ( updateSearch search data, Cmd.none )
 
 
 updateSearch : String -> Model -> Model
@@ -66,19 +83,18 @@ updateSearch search data =
 view : Model -> Html Msg
 view data =
     div [ class "px-4" ]
-        [ node "link" [ rel "stylesheet", href "/styles/style.css" ] []
-        , div []
+        [ div []
             [ h1 [ class "text-xl", class "px-4", class "pt-4" ] [ text "Risk of Rain 2 Items" ]
             , viewSearchBar data.searchContent
             ]
         , div [ class "flex" ]
-            [ viewItemList data.items data.searchMatches
+            [ viewItemList data.config data.items data.searchMatches
             , viewFocusedItem data.focusedItem
             ]
         ]
 
 
-viewFocusedItem : Maybe.Maybe Items.Details -> Html Msg
+viewFocusedItem : Maybe.Maybe Item -> Html Msg
 viewFocusedItem focus =
     case focus of
         Maybe.Nothing ->
@@ -86,25 +102,30 @@ viewFocusedItem focus =
 
         Maybe.Just item ->
             div [ class "w-1/4", class "p-4" ]
-                [ h3 [] [ text item.displayName ]
+                [ h3 [] [ text item.name ]
                 , p [] [ text item.description ]
                 ]
 
 
-viewItemList : List Items.Details -> List String -> Html Msg
-viewItemList items matches =
+viewItemList : Config -> List Item -> List String -> Html Msg
+viewItemList conf items matches =
     let
         orderedItems =
-            List.sortWith Items.defaultItemOrder items
+            List.sortWith Item.defaultItemOrder items
     in
     div [ class "w-3/4", class "p-4" ]
         [ ul [ class "flex", class "flex-wrap" ]
-            (List.map (\x -> viewItem x (List.member x.displayName matches)) orderedItems)
+            (List.map (\x -> viewItem conf x (List.member x.name matches)) orderedItems)
         ]
 
 
-viewItem : Items.Details -> Bool -> Html Msg
-viewItem item itemMatch =
+imagePath : Config -> Item -> String
+imagePath conf item =
+    conf.itemImagesDirectory ++ "/" ++ item.image
+
+
+viewItem : Config -> Item -> Bool -> Html Msg
+viewItem conf item itemMatch =
     let
         itemMatchClass =
             if itemMatch then
@@ -121,11 +142,11 @@ viewItem item itemMatch =
         , class "justify-center"
         , class "m-0.5"
         , itemMatchClass
-        , class <| backgroundClass item
+        , class <| Item.backgroundClass item
         , Events.onMouseOver (ItemMouseOver item)
         ]
         [ img
-            [ src (Items.image item)
+            [ src (imagePath conf item)
             , class "max-w-12"
             , class "max-h-12"
             ]
