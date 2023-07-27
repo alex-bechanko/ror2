@@ -6,8 +6,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events exposing (..)
 import Item exposing (Item)
-import Items exposing (backgroundClass)
-import Search
 
 
 main : Program Flags Model Msg
@@ -20,7 +18,7 @@ type alias Model =
     , focusedItem : Maybe.Maybe Item
     , searchContent : String
     , searchMatches : List String
-    , itemIndex : ElmTextSearch.Index Items.Details
+    , itemIndex : ElmTextSearch.Index Item
     , config : Config
     }
 
@@ -47,12 +45,18 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         index =
-            Tuple.first <| Search.new Items.items
+            Tuple.first <|
+                ElmTextSearch.addDocs flags.items <|
+                    ElmTextSearch.new
+                        { ref = .name
+                        , fields = [ ( .name, 1.0 ) ]
+                        , listFields = []
+                        }
     in
     ( { items = flags.items
       , focusedItem = Maybe.Nothing
       , searchContent = ""
-      , searchMatches = List.map .displayName Items.items
+      , searchMatches = List.map .name flags.items
       , itemIndex = index
       , config = flags.config
       }
@@ -61,23 +65,23 @@ init flags =
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg data =
+update msg model =
     case msg of
         ItemMouseOver item ->
-            ( { data | focusedItem = Maybe.Just item }, Cmd.none )
+            ( { model | focusedItem = Maybe.Just item }, Cmd.none )
 
         SearchStringUpdate search ->
-            ( updateSearch search data, Cmd.none )
+            ( updateSearch search model, Cmd.none )
 
 
 updateSearch : String -> Model -> Model
-updateSearch search data =
-    case ElmTextSearch.searchT search data.itemIndex of
+updateSearch search model =
+    case ElmTextSearch.searchT search model.itemIndex of
         Result.Err _ ->
-            { data | searchMatches = List.map .displayName Items.items, searchContent = search }
+            { model | searchMatches = List.map .name model.items, searchContent = search }
 
         Result.Ok ( index, matches ) ->
-            { data | itemIndex = index, searchMatches = List.map Tuple.first matches, searchContent = search }
+            { model | itemIndex = index, searchMatches = List.map Tuple.first matches, searchContent = search }
 
 
 view : Model -> Html Msg
