@@ -1,6 +1,7 @@
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
+import Config exposing (Config)
 import ElmTextSearch
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -25,10 +26,6 @@ type alias Model =
 
 type alias Flags =
     { config : Config, items : List Item }
-
-
-type alias Config =
-    { itemImagesDirectory : String }
 
 
 type Msg
@@ -123,11 +120,6 @@ viewItemList conf items matches =
         ]
 
 
-imagePath : Config -> Item -> String
-imagePath conf item =
-    conf.itemImagesDirectory ++ "/" ++ item.image
-
-
 viewItem : Config -> Item -> Bool -> Html Msg
 viewItem conf item itemMatch =
     let
@@ -137,6 +129,9 @@ viewItem conf item itemMatch =
 
             else
                 class "opacity-30"
+
+        bgStyle =
+            "url('" ++ Config.backgroundImagePath conf item ++ "')"
     in
     li
         [ class "bg-cover"
@@ -145,12 +140,12 @@ viewItem conf item itemMatch =
         , class "flex"
         , class "justify-center"
         , class "m-0.5"
+        , style "background-image" bgStyle
         , itemMatchClass
-        , class <| Item.backgroundClass item
         , Events.onMouseOver (ItemMouseOver item)
         ]
         [ img
-            [ src (imagePath conf item)
+            [ src (Config.imagePath conf item)
             , class "max-w-12"
             , class "max-h-12"
             ]

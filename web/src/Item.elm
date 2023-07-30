@@ -1,4 +1,4 @@
-module Item exposing (Item, backgroundClass, defaultItemOrder)
+module Item exposing (Item, defaultItemOrder)
 
 
 type alias Item =
@@ -31,34 +31,6 @@ raritytoInt item =
 
         _ ->
             7
-
-
-backgroundClass : Item -> String
-backgroundClass item =
-    case item.rarity of
-        "Common" ->
-            "bg-rarity-common"
-
-        "Rare" ->
-            "bg-rarity-rare"
-
-        "Legendary" ->
-            "bg-rarity-legendary"
-
-        "Boss" ->
-            "bg-rarity-boss"
-
-        "Lunar" ->
-            "bg-rarity-lunar"
-
-        "Void" ->
-            "bg-rarity-void"
-
-        "Equipment" ->
-            "bg-rarity-equipment"
-
-        _ ->
-            ""
 
 
 defaultItemOrder : Item -> Item -> Order
