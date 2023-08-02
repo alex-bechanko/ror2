@@ -11,7 +11,7 @@ serve: all
 
 # Start of artifact generation in build directory
 .PHONY: all
-all: build/index.html build/js/ror2/main.js build/css/ror2.css build/js/ror2/items.js build/js/ror2/config.js images
+all: build/index.html build/js/ror2/main.js build/css/ror2.css build/js/ror2/catalog.js build/js/ror2/config.js images
 
 build/index.html: build web/index.html
 	cp web/index.html build/index.html
@@ -21,9 +21,11 @@ build/index.html: build web/index.html
 build/js/ror2/main.js: build/js/ror2
 	cd web && elm make src/Main.elm --output ../build/js/ror2/main.js
 
-build/js/ror2/items.js: build/js/ror2 data/items.dhall
-	dhall-to-json --file data/items.dhall --output build/js/ror2/items.js --pretty
-	./tools/json-to-javascript.sh items build/js/ror2/items.js
+# Make phony to have `dhall-to-json` rerun everytime
+.PHONY: build/js/ror2/catalog.js
+build/js/ror2/catalog.js: build/js/ror2 data/catalog.dhall
+	dhall-to-json --file data/catalog.dhall --output build/js/ror2/catalog.js --pretty
+	./tools/json-to-javascript.sh catalog build/js/ror2/catalog.js
 
 build/js/ror2/config.js: build/js/ror2 web/config.js
 	cp web/config.js build/js/ror2/config.js
