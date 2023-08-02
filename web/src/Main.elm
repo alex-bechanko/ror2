@@ -127,7 +127,7 @@ viewFocusedItem focus =
         Maybe.Just item ->
             div [ class "w-1/4", class "p-4" ]
                 [ h3 [] [ text item.name ]
-                , p [] [ text item.description ]
+                , pre [ style "white-space" "pre-wrap" ] [ text item.description ]
                 ]
 
 
