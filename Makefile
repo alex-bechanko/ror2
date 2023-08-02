@@ -38,8 +38,7 @@ build/css/ror2.css: build/css
 # Made phony to have `rsync` track updating the images instead of
 .PHONY: images
 images: build/images/ror2/backgrounds build/images/ror2/items
-	rsync -ah web/images/backgrounds/ build/images/ror2/backgrounds
-	rsync -ah web/images/items/ build/images/ror2/items
+	rsync -ah web/images/ build/images/ror2/
 
 # Start of rules for generating the build directory
 build:
