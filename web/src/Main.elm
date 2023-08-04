@@ -1,7 +1,6 @@
 module Main exposing (Msg(..), main, update, view)
 
 import Browser
-import ElmTextSearch
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events as Events exposing (..)
@@ -29,7 +28,6 @@ type alias Model =
     , focusedItem : Maybe.Maybe Item
     , searchContent : String
     , searchMatches : List String
-    , itemIndex : ElmTextSearch.Index Item
     , config : Config
     }
 
@@ -55,21 +53,10 @@ subscriptions _ =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    let
-        index =
-            Tuple.first <|
-                ElmTextSearch.addDocs (concatMap .items flags.catalog) <|
-                    ElmTextSearch.new
-                        { ref = .name
-                        , fields = [ ( .name, 1.0 ) ]
-                        , listFields = []
-                        }
-    in
     ( { catalog = flags.catalog
       , focusedItem = Maybe.Nothing
       , searchContent = ""
       , searchMatches = List.map .name <| concatMap .items flags.catalog
-      , itemIndex = index
       , config = flags.config
       }
     , Cmd.none
@@ -88,15 +75,18 @@ update msg model =
 
 updateSearch : String -> Model -> Model
 updateSearch search model =
-    case ElmTextSearch.searchT search model.itemIndex of
-        Result.Err _ ->
-            { model
-                | searchMatches = List.map .name <| concatMap .items model.catalog
-                , searchContent = search
-            }
+    let
+        isMatch x =
+            if String.contains (String.toLower search) (String.toLower x.name) then
+                Just x.name
 
-        Result.Ok ( index, matches ) ->
-            { model | itemIndex = index, searchMatches = List.map Tuple.first matches, searchContent = search }
+            else
+                Nothing
+
+        matches =
+            List.filterMap isMatch <| concatMap .items model.catalog
+    in
+    { model | searchMatches = matches, searchContent = search }
 
 
 view : Model -> Html Msg
