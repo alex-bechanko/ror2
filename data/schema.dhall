@@ -1,18 +1,49 @@
-let Item : Type =
-      { name : Text
+let ItemDescription
+    : Type
+    = { name : Text
       , description : Text
       , image : Text
-      , background : Text
+      , background : Optional Text
       }
 
-let Category : Type =
-  { name : Text 
-  , items : List Item
-  }
-  
-let Catalog : Type = List Category
+let Dlc
+    : Type
+    = < SurvivorsOfTheVoid | SeekersOfTheStorm >
 
-in { Item = Item
-   , Category = Category
-   , Catalog = Catalog
-   }
+let Rarity
+    : Type
+    = < Common | Uncommon | Legendary | Boss | Lunar | Void | Equipment >
+
+let GameItem
+    : Type
+    = { item : ItemDescription
+      , advanced_description : Text
+      , interactions : List Text
+      , dlc : Optional Dlc
+      , unlocked_by : Optional Text
+      , rarity : Rarity
+      }
+
+let Artifact
+    : Type
+    = { description : ItemDescription
+      , code : Text
+      , synergies : Text
+      , location : Text
+      }
+
+let Level
+    : Type
+    = { description : ItemDescription
+      , newt_altars : List Text
+      }
+
+let Category
+    : Type
+    = < Items : List GameItem | Artifacts : List Artifact | Levels : List Level >
+
+let Catalog
+    : Type
+    = List Category
+
+in  { Catalog, Category, Level, Artifact, GameItem, Dlc, Rarity }

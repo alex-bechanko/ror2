@@ -15,4 +15,11 @@ in  { name = "Artifact of Dissonance"
         ''
     , image = "artifacts/artifact_of_dissonance.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in the Abyssal Depths.
+        It can be found on one of the high platforms near the ceiling.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

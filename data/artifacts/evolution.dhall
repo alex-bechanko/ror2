@@ -15,4 +15,11 @@ in  { name = "Artifact of Evolution"
         ''
     , image = "artifacts/artifact_of_evolution.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in the A Moment, Whole stage.
+        It can be found on one of the high platforms near the ceiling.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

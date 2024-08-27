@@ -1,5 +1,25 @@
-{ name = "Red Item Scrap"
-, description = "Does nothing. Prioritized when used with 3D Printers."
-, image = "items/red_item_scrap.png"
-, background = "backgrounds/legendary.png"
-}
+let empty = https://prelude.dhall-lang.org/List/empty
+
+let Schema = ../schema.dhall
+
+let Dlc = Schema.Dlc
+
+let Rarity = Schema.Rarity
+
+in    { item =
+        { name = "Red Item Scrap"
+        , description = "Does nothing. Prioritized when used with 3D Printers."
+        , image = "items/red_item_scrap.png"
+        , background = Some "backgrounds/legendary.png"
+        }
+      , dlc = None Dlc
+      , rarity = Rarity.Legendary
+      , advanced_description =
+          ''
+          Obtained by from a Scrapper.
+          Prioritized when used with a 3D Printer, or a Cauldron.
+          ''
+      , unlocked_by = None Text
+      , interactions = empty Text
+      }
+    : Schema.GameItem

@@ -15,4 +15,11 @@ in  { name = "Artifact of Enigma"
         ''
     , image = "artifacts/artifact_of_enigma.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in the Bulwark's Ambry.
+        It can be found on a large cube away from the main stage.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

@@ -15,4 +15,10 @@ in  { name = "Artifact of Glass"
         ''
     , image = "artifacts/artifact_of_glass.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in A Moment, Fractured, behind the obelisk
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

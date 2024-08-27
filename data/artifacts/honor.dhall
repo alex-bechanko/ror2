@@ -15,4 +15,11 @@ in  { name = "Artifact of Honor"
         ''
     , image = "artifacts/artifact_of_honor.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in the Sky Meadow.
+        It can be found next to the area where artifact codes are entered.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

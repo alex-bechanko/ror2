@@ -15,4 +15,11 @@ in  { name = "Artifact of Swarms"
         ''
     , image = "artifacts/artifact_of_swarms.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in Rallypoint Delta.
+        It can be found on the island in the lake.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

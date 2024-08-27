@@ -15,4 +15,11 @@ in  { name = "Artifact of Death"
         ''
     , image = "artifacts/artifact_of_death.png"
     , background = "backgrounds/box_outline.png"
+    , found_by = 
+        ''
+        The pattern for this artifact can be found in the Wetland Aspect.
+        It can be found at the alter of N'kuhana in the cave under the stage.
+
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

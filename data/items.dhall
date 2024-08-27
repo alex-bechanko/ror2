@@ -1,7 +1,5 @@
 let Schema = ./schema.dhall
-let items_category : Schema.Category = 
-  { name = "Items"
-  , items = 
+let items_category : Schema.Category =  Schema.Category.Items
     -- starting with common items
     [ ./items/repulsion_armor_plate.dhall
     , ./items/mocha.dhall
@@ -104,10 +102,10 @@ let items_category : Schema.Category =
     , ./items/defense_nucleus.dhall
     , ./items/genesis_loop.dhall
     , ./items/planula.dhall
-    , ./items/irradiant_pearl.dhall
+    , ./items/pearl.dhall
     , ./items/empathy_cores.dhall
     , ./items/yellow_item_scrap.dhall
-    , ./items/pearl.dhall
+    , ./items/irradiant_pearl.dhall
     , ./items/mired_urn.dhall
     , ./items/little_disciple.dhall
     , ./items/halcyon_seed.dhall
@@ -178,5 +176,4 @@ let items_category : Schema.Category =
     , ./items/trophy_hunters_tricorn_consumed.dhall
     , ./items/volcanic_egg.dhall
     ]
-  }
 in items_category

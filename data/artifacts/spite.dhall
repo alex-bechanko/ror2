@@ -15,4 +15,12 @@ in  { name = "Artifact of Spite"
         ''
     , image = "artifacts/artifact_of_spite.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in the Settings screen.
+        It can be found in the background next to the escape pod.
+        It is easier to see by changing the LOD Bias setting to custom.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }

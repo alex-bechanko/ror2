@@ -15,4 +15,11 @@ in  { name = "Artifact of Vengeance"
         ''
     , image = "artifacts/artifact_of_vengeance.png"
     , background = "backgrounds/box_outline.png"
+    , found_by =
+        ''
+        The pattern for this artifact can be found in the Logbook.
+        It can be found in the entry for the environment Hidden Realm: A Momemnt, Fractured.
+        
+        IMAGE_OF_PATTERN_HERE
+        ''
     }
