@@ -25,7 +25,7 @@ build/js/ror2/main.js: build/js/ror2
 .PHONY: build/js/ror2/catalog.js
 build/js/ror2/catalog.js: build/js/ror2 data/catalog.dhall
 	dhall-to-json --file data/catalog.dhall --output build/js/ror2/catalog.js --pretty
-	./tools/json-to-javascript.sh catalog build/js/ror2/catalog.js
+	json-to-javascript catalog build/js/ror2/catalog.js
 
 build/js/ror2/config.js: build/js/ror2 web/config.js
 	cp web/config.js build/js/ror2/config.js

@@ -10,8 +10,14 @@
     { self, nixpkgs, flake-utils, y2j, gojsonschema-cli, static-file-server }:
     let pkgs = nixpkgs.legacyPackages;
     in flake-utils.lib.eachDefaultSystem (system: {
+      packages.json-to-javascript = pkgs.${system}.writeShellApplication {
+        name = "json-to-javascript";
+        text = builtins.readFile ./tools/json-to-javascript.sh;
+      };
+
       devShells.default = pkgs.${system}.mkShell {
         buildInputs = [
+          self.packages.${system}.json-to-javascript
           y2j.packages.${system}.y2j
           gojsonschema-cli.packages.${system}.gojsonschema-cli
           static-file-server.packages.${system}.static-file-server
