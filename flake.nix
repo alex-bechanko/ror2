@@ -21,6 +21,7 @@
           y2j.packages.${system}.y2j
           gojsonschema-cli.packages.${system}.gojsonschema-cli
           static-file-server.packages.${system}.static-file-server
+          pkgs.${system}.bashInteractive
           pkgs.${system}.elmPackages.elm
           pkgs.${system}.elmPackages.elm-format
           pkgs.${system}.elmPackages.elm-live
