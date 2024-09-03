@@ -26,9 +26,8 @@ let GameItem
 
 let Artifact
     : Type
-    = { description : ItemDescription
+    = { item : ItemDescription
       , code : Text
-      , synergies : Text
       , location : Text
       }
 

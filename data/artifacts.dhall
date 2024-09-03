@@ -2,8 +2,7 @@ let Schema = ./schema.dhall
 
 let artifacts
     : Schema.Category
-    = { name = "Artifacts"
-      , items =
+    = Schema.Category.Artifacts 
         [ ./artifacts/chaos.dhall
         , ./artifacts/command.dhall
         , ./artifacts/death.dhall
@@ -23,6 +22,5 @@ let artifacts
         , ./artifacts/swarms.dhall
         , ./artifacts/vengeance.dhall
         ]
-      }
 
 in  artifacts
