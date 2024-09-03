@@ -37,12 +37,14 @@ let Level
       , newt_altars : List Text
       }
 
-let Category
-    : Type
-    = < Items : List GameItem | Artifacts : List Artifact | Levels : List Level >
-
 let Catalog
     : Type
-    = List Category
+    = { items : List GameItem, artifacts : List Artifact }
 
-in  { Catalog, Category, Level, Artifact, GameItem, Dlc, Rarity }
+let WebItem : Type = { name : Text, description : Text, image: Text, background: Text }
+
+let WebCategory : Type = { name : Text,items : List WebItem }
+
+let WebCatalog : Type = List WebCategory
+
+in  { Catalog, Level, Artifact, GameItem, Dlc, Rarity, WebCatalog, WebCategory, WebItem }
