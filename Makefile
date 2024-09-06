@@ -23,8 +23,8 @@ build/js/ror2/main.js: build/js/ror2
 
 # Make phony to have `dhall-to-json` rerun everytime
 .PHONY: build/js/ror2/webcatalog.js
-build/js/ror2/catalog.js: build/js/ror2 data/webcatalog.dhall
-	dhall-to-json --file data/webcatalog.dhall --output build/js/ror2/catalog.js --pretty --preserve-null
+build/js/ror2/catalog.js: build/js/ror2 data/web/package.dhall
+	dhall-to-json --file data/web/package.dhall --output build/js/ror2/catalog.js --pretty --preserve-null
 	json-to-javascript catalog build/js/ror2/catalog.js
 
 build/js/ror2/config.js: build/js/ror2 web/config.js

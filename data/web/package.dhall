@@ -2,9 +2,15 @@ let default = https://prelude.dhall-lang.org/Optional/default
 
 let map = https://prelude.dhall-lang.org/List/map
 
-let Schema = ./schema.dhall
+let catalog = ../catalog/package.dhall
+let Schema = catalog.Schema
 
-let catalog = ./catalog.dhall
+let WebItem : Type = { name : Text, description : Text, image: Text, background: Text }
+
+let WebCategory : Type = { name : Text,items : List WebItem }
+
+let WebCatalog : Type = List WebCategory
+
 
 let itemToWebItem =
       \(g : Schema.GameItem) ->
@@ -13,7 +19,7 @@ let itemToWebItem =
           , image = g.item.image
           , background = default Text "" g.item.background
           }
-        : Schema.WebItem
+        : WebItem
 
 let artifactToWebItem =
       \(a : Schema.Artifact) ->
@@ -26,19 +32,19 @@ let artifactToWebItem =
           , image = a.item.image
           , background = default Text "" a.item.background
           }
-        : Schema.WebItem
+        : WebItem
 
 let itemsCategory
-    : Schema.WebCategory
+    : WebCategory
     = { name = "Items"
-      , items = map Schema.GameItem Schema.WebItem itemToWebItem catalog.items
+      , items = map Schema.GameItem WebItem itemToWebItem catalog.items
       }
 
 let artifactsCategory
-    : Schema.WebCategory
+    : WebCategory
     = { name = "Artifacts"
       , items =
-          map Schema.Artifact Schema.WebItem artifactToWebItem catalog.artifacts
+          map Schema.Artifact WebItem artifactToWebItem catalog.artifacts
       }
 
-in  [ itemsCategory, artifactsCategory ] : Schema.WebCatalog
+in  [ itemsCategory, artifactsCategory ] : WebCatalog
