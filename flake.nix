@@ -19,6 +19,21 @@
           text = builtins.readFile ./tools/json-to-javascript.sh;
         };
 
+        packages.ror2-data = pkgs.dhallPackages.buildDhallDirectoryPackage {
+          name = "ror2-data";
+          src = ./data/catalog;
+          dependencies = [pkgs.dhallPackages.Prelude];
+          source = true;
+        };
+
+        packages.ror2-web-data = pkgs.dhallPackages.buildDhallDirectoryPackage {
+          name = "ror2-web-data";
+          src = ./data;
+          file = "web.dhall";
+          dependencies = [pkgs.dhallPackages.Prelude];
+          source = true;
+        };
+
         devShells.default = pkgs.mkShell {
           buildInputs = [
             self.packages.${system}.json-to-javascript
