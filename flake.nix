@@ -34,6 +34,8 @@
           source = true;
         };
 
+        packages.ror2-frontend = ./web/default.nix;
+
         devShells.default = pkgs.mkShell {
           buildInputs = [
             self.packages.${system}.json-to-javascript
@@ -50,6 +52,7 @@
             pkgs.dhall-lsp-server
             pkgs.rsync
             pkgs.rename
+            pkgs.elm2nix
           ];
         };
 
