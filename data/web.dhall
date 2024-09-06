@@ -1,12 +1,8 @@
-let default =
-      https://prelude.dhall-lang.org/Optional/default
-        sha256:5bd665b0d6605c374b3c4a7e2e2bd3b9c1e39323d41441149ed5e30d86e889ad
+let Prelude =
+      https://prelude.dhall-lang.org/v20.1.0/package.dhall
+        sha256:26b0ef498663d269e4dc6a82b0ee289ec565d683ef4c00d0ebdd25333a5a3c98
 
-let map =
-      https://prelude.dhall-lang.org/List/map
-        sha256:dd845ffb4568d40327f2a817eb42d1c6138b929ca758d50bc33112ef3c885680
-
-let catalog = ../catalog/package.dhall
+let catalog = ./catalog/package.dhall
 
 let Schema = catalog.Schema
 
@@ -27,7 +23,7 @@ let itemToWebItem =
           { name = g.item.name
           , description = g.advanced_description
           , image = g.item.image
-          , background = default Text "" g.item.background
+          , background = Prelude.Optional.default Text "" g.item.background
           }
         : WebItem
 
@@ -40,20 +36,20 @@ let artifactToWebItem =
               ${a.code}
               ''
           , image = a.item.image
-          , background = default Text "" a.item.background
+          , background = Prelude.Optional.default Text "" a.item.background
           }
         : WebItem
 
 let itemsCategory
     : WebCategory
     = { name = "Items"
-      , items = map Schema.GameItem WebItem itemToWebItem catalog.items
+      , items = Prelude.List.map Schema.GameItem WebItem itemToWebItem catalog.items
       }
 
 let artifactsCategory
     : WebCategory
     = { name = "Artifacts"
-      , items = map Schema.Artifact WebItem artifactToWebItem catalog.artifacts
+      , items = Prelude.List.map Schema.Artifact WebItem artifactToWebItem catalog.artifacts
       }
 
 in  [ itemsCategory, artifactsCategory ] : WebCatalog

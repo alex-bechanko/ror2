@@ -1,6 +1,6 @@
-let empty =
-      https://prelude.dhall-lang.org/List/empty
-        sha256:b2f561f35098c457353723c93a22bd5de28d26ecc5370814bef9dfda421e0147
+let Prelude =
+      https://prelude.dhall-lang.org/v20.1.0/package.dhall
+        sha256:26b0ef498663d269e4dc6a82b0ee289ec565d683ef4c00d0ebdd25333a5a3c98
 
 let Schema = ../schema.dhall
 
@@ -26,6 +26,6 @@ in    { item =
           The zone raises attack and movement speed by 30% for any ally within it.
           ''
       , unlocked_by = None Text
-      , interactions = empty Text
+      , interactions = Prelude.List.empty Text
       }
     : Schema.GameItem
