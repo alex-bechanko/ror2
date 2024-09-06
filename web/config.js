@@ -1,3 +1,3 @@
 var config = {
-  imagesDirectory: "images/ror2"
+  imagesDirectory: "images/"
 };
