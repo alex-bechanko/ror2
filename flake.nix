@@ -29,9 +29,9 @@
 
         packages.ror2-web-data = pkgs.dhallPackages.buildDhallDirectoryPackage {
           name = "ror2-web-data";
-          src = ./data;
-          file = "web.dhall";
-          dependencies = [pkgs.dhallPackages.Prelude];
+          src = ./data/web;
+          file = "package.dhall";
+          dependencies = [pkgs.dhallPackages.Prelude flake-pkgs.ror2-data ];
           source = true;
         };
 
