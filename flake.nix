@@ -20,8 +20,8 @@
           text = builtins.readFile ./tools/json-to-javascript.sh;
         };
 
-        packages.ror2-data = pkgs.dhallPackages.buildDhallDirectoryPackage {
-          name = "ror2-data";
+        packages.ror2-catalog = pkgs.dhallPackages.buildDhallDirectoryPackage {
+          name = "ror2-catalog";
           src = ./data/catalog;
           dependencies = [pkgs.dhallPackages.Prelude];
           source = true;
@@ -31,7 +31,7 @@
           name = "ror2-web-data";
           src = ./data/web;
           file = "package.dhall";
-          dependencies = [pkgs.dhallPackages.Prelude flake-pkgs.ror2-data ];
+          dependencies = [pkgs.dhallPackages.Prelude flake-pkgs.ror2-catalog ];
           source = true;
         };
 
@@ -98,6 +98,7 @@
             pkgs.rsync
             pkgs.rename
             pkgs.elm2nix
+            pkgs.dhall-nixpkgs
           ];
         };
 
